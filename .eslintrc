@@ -1,0 +1,35 @@
+{
+  "parser": "esprima-fb",
+  "rules": {
+    "block-scoped-var": [2],
+    "complexity": [2, 3],
+    "default-case": [2],
+    "eol-last": [0],
+    "eqeqeq": [2],
+    "guard-for-in": [2],
+    "key-spacing": [0],
+    "max-depth": [2, 2],
+    "max-len": [2, 130, 4],
+    "max-params": [2, 4],
+    "no-bitwise": [2],
+    "no-div-regex": [2],
+    "no-else-return": [2],
+    "no-trailing-spaces": [0],
+    "no-underscore-dangle": [0],
+    "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+    "no-use-before-define": [2, "nofunc"],
+    "quotes": [2, "single"],
+    "semi": [2, "always"],
+    "valid-typeof": [2]
+  },
+  "env": {
+    "jasmine": true,
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "require": false,
+    "define": false
+  },
+  "plugins": []
+}

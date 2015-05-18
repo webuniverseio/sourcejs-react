@@ -1,0 +1,27 @@
+{
+  "name": "sourcejs-react",
+  "version": "0.0.1",
+  "description": "React middleware for sourcejs.com",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^3.8.0",
+    "node-jsx": "^0.13.3",
+    "react": "^0.13.3"
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/szarouski/sourcejs-react.git"
+  },
+  "keywords": [
+    "sourcejs",
+    "react"
+  ],
+  "author": "Sergey Zarouski",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/szarouski/sourcejs-react/issues"
+  },
+  "homepage": "https://github.com/szarouski/sourcejs-react"
+}
