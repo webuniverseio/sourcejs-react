@@ -1,6 +1,6 @@
 'use strict';
 
-require('node-jsx').install({extension: '.jsx'});
+require('node-jsx').install({extension: '.jsx', harmony: true});
 var React = require('react/addons');
 var path = require('path');
 var _ = require('lodash');
