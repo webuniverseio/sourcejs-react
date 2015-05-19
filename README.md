@@ -73,3 +73,44 @@ module.exports = React.createClass({
     }
 });
 ```
+
+## Isomorphic (client + server side) rendering
+
+Note, you might get warnings that checksum are different when you try to use server and client side rendering together. That might happen because on server side (sourcejs) checksum will be created for the whole spec page, while you might be interested only in what goes in `section.source_example`. You need to force react to create a checksum in a following way (for example above):
+```js
+var React = require('react/addons');
+var Button = require('button.jsx');
+module.exports = React.createClass({
+    render: function () {
+        var factory = React.createFactory(Button);
+        var button = React.renderToString(factory({
+            children: 'Btn Copy Gibson Reg; 1.2em'
+        }));
+        var buttonWhite = React.renderToString(factory({
+            modifier: 'white',
+            children: 'Btn Copy Gibson Reg; 1.2em'
+        }));
+        return (
+            <div>
+                <link rel="stylesheet" href="source-example.css" />
+
+                <h1>Button</h1>
+
+                <div className="source_info">
+                    <p>Various button treatments.</p>
+                </div>
+
+                <section className="source_section">
+                    <h2>Button (Purple)</h2>
+                    <div className="source_example" dangerouslySetInnerHTML={{__html: button}}></div>
+                </section>
+
+                <section className="source_section">
+                    <h2>Button (White)</h2>
+                    <div className="source_example" dangerouslySetInnerHTML={{__html: buttonWhite}}></div>
+                </section>
+            </div>
+        );
+    }
+});
+```
