@@ -14,16 +14,41 @@ var _ = require('lodash');
  * */
 exports.process = function (req, res, next) {
     if (req.specData && req.specData.isJsx) {
-        var pathToFile = path.join(global.app.get('user'), req.url);
         _.each(require.cache, function cleanAllJsxReferences(cacheObj, key) {
             if (path.extname(key) === '.jsx') {
                 delete require.cache[key];
             }
         });
-        var component = require(pathToFile);
-        var factory = React.createFactory(component);
-        req.specData.renderedHtml = React.renderToString(factory({}));
+        var pathToFile = path.join(global.app.get('user'), req.url);
+        var html;
+        try {
+            var component = React.createFactory(require(pathToFile));
+            html = getHtml(component);
+        } catch (ex) {
+            html = getErrorAsHtml(ex);
+        }
+        req.specData.renderedHtml = html;
     }
 
     next();
 };
+
+function getHtml(component) {
+    try {
+        return React.renderToString(component({}));
+    } catch(ex) {
+        return getErrorAsHtml(ex);
+    }
+}
+
+function getErrorAsHtml(ex) {
+    if (global.MODE !== 'development') {
+        console.error(ex);
+        return 'Server error';
+    }
+
+    var error = React.createFactory(require('./error.jsx'));
+    return React.renderToString(error({
+        stack: ex.stack
+    }));
+}

@@ -114,3 +114,7 @@ module.exports = React.createClass({
     }
 });
 ```
+
+## Error handling
+
+sourcejs-react will show errors right on the page when sourcejs is launched in development mode and log errors via console.error when in other (production) mode.
