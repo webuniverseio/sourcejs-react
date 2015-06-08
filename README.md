@@ -118,3 +118,19 @@ module.exports = React.createClass({
 ## Error handling
 
 sourcejs-react will show errors right on the page when sourcejs is launched in development mode and log errors via console.error when in other (production) mode.
+
+##Showing JSX markup instead of rendered markup
+By default sourcejs use code inside `.source_example` to output source code, like on following screenshot:
+![rendered code](https://cloud.githubusercontent.com/assets/3027415/8033889/b37faaaa-0de2-11e5-918e-76fb2ea84a22.png)
+In order to show just JSX markup, instead of rendered markup, you can use `.src-html` and copy markup example there
+```html
+<section className="source_section">
+    <h2>Button (Purple)</h2>
+    <code className="src-html">
+        {`<Button color="purple">Btn Copy Gibson Reg; 1.2em</Button>`}
+    </code>
+    <div className="source_example">
+      <Button color="purple">Btn Copy Gibson Reg; 1.2em</Button>
+    </div>
+</section>
+```
