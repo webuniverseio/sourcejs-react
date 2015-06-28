@@ -134,3 +134,17 @@ In order to show just JSX markup, instead of rendered markup, you can use `.src-
     </div>
 </section>
 ```
+
+Alternatively you can import `sourcejs-react/SourceExample.jsx`:
+```js
+var SourceExample = require('sourcejs-react/SourceExample.jsx');
+```
+and use it like in example below inside render method, code block will be auto-generated for you:
+```html
+<section className="source_section">
+    <h2>Button (Purple)</h2>
+    <SourceExample extraClasses="you addition class names">
+      <Button color="purple">Btn Copy Gibson Reg; 1.2em</Button>
+    </SourceExample>
+</section>
+```
