@@ -2,7 +2,9 @@
 
 require('node-jsx').install({extension: '.jsx', harmony: true});
 var React = require('react/addons');
+var JSXTransformer = require('react/dist/JSXTransformer');
 var path = require('path');
+var fs = require('fs');
 var _ = require('lodash');
 
 /*
@@ -22,7 +24,17 @@ exports.process = function (req, res, next) {
         var pathToFile = path.join(global.app.get('user'), req.url);
         var html;
         try {
-            var component = React.createFactory(require(pathToFile));
+            var matchingPattern = /<SourceExample((?:.|\n)*?)>\s*((?:.|\n)+?)\n\s*?<\/SourceExample>/g;
+            //noinspection HtmlUnknownAttribute
+            var replacementPattern = '<code className="src-html source_visible">{`$2`}</code>' +
+                '<SourceExample$1>$2</SourceExample>';
+            var specContents = fs.readFileSync(pathToFile, {
+                encoding: 'utf-8'
+            }).replace(matchingPattern, replacementPattern);
+            specContents = JSXTransformer.transform(specContents, {
+                harmony: true
+            }).code;
+            var component = React.createFactory(requireCode(specContents, pathToFile));
             html = getHtml(component);
         } catch (ex) {
             html = getErrorAsHtml(ex);
@@ -32,6 +44,30 @@ exports.process = function (req, res, next) {
 
     next();
 };
+
+function requireCode(code, pathToCode) {
+    var path = require('path');
+    var Module = require('module').Module;
+
+    var filepath = path.resolve(process.cwd(), pathToCode);
+    var dirname = path.dirname(filepath);
+
+    var cachedModule = Module._cache[filepath];
+    if (cachedModule) {
+        return cachedModule.exports;
+    }
+
+    var mod = new Module(filepath, module);
+    Module._cache[filepath] = mod;
+
+    mod.filename = filepath;
+    mod.paths = Module._nodeModulePaths(dirname);
+
+    mod._compile(code, filepath);
+    mod.loaded = true;
+
+    return mod.exports;
+}
 
 function getHtml(component) {
     try {
