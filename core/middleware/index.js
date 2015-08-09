@@ -6,6 +6,7 @@ var JSXTransformer = require('react/dist/JSXTransformer');
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
+var eol = require('eol');
 
 /*
  * Get html from response and parse react markup
@@ -28,9 +29,9 @@ exports.process = function (req, res, next) {
             //noinspection HtmlUnknownAttribute
             var replacementPattern = '<code className="src-html source_visible">{`$2`}</code>' +
                 '<SourceExample$1>$2</SourceExample>';
-            var specContents = fs.readFileSync(pathToFile, {
+            var specContents = eol.lf(fs.readFileSync(pathToFile, {
                 encoding: 'utf-8'
-            }).replace(matchingPattern, replacementPattern);
+            })).replace(matchingPattern, replacementPattern);
             specContents = JSXTransformer.transform(specContents, {
                 harmony: true
             }).code;

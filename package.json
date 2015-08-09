@@ -4,6 +4,7 @@
   "description": "React middleware for sourcejs.com",
   "main": "index.js",
   "dependencies": {
+    "eol": "^0.2.0",
     "lodash": "^3.8.0",
     "node-jsx": "^0.13.3",
     "react": "^0.13.3"
