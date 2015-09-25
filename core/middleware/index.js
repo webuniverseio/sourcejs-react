@@ -1,12 +1,24 @@
 'use strict';
-
-require('node-jsx').install({extension: '.jsx', harmony: true});
+var options = global.opts.plugins && global.opts.plugins.react ? global.opts.plugins.react : {};
+var babelOptions = options.babel || {
+    ignore: /.*/,
+    only: [
+        '**/user/specs/**',
+        /sourcejs-react(?![\/]node_modules)/
+    ]
+};
+require('babel/register')(babelOptions);
 var React = require('react/addons');
-var JSXTransformer = require('react/dist/JSXTransformer');
+var babel = require('babel-core');
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
 var eol = require('eol');
+var FilePatternMatcher = require('./FilePatternMatcher');
+
+function isValidSpecType(req) {
+    return req.specData && (req.specData.isJsx || req.specData.isJs);
+}
 
 /*
  * Get html from response and parse react markup
@@ -16,9 +28,14 @@ var eol = require('eol');
  * @param {function} next - The callback function
  * */
 exports.process = function (req, res, next) {
-    if (req.specData && req.specData.isJsx) {
-        _.each(require.cache, function cleanAllJsxReferences(cacheObj, key) {
-            if (path.extname(key) === '.jsx') {
+    if (isValidSpecType(req)) {
+        _.each(require.cache, function cleanReferences(cacheObj, key) {
+            var pathMatcher = new FilePatternMatcher({
+                filePaths: [key],
+                patterns: options.refreshCachePatterns || ['**/*.jsx']
+            });
+
+            if (pathMatcher.hasMatch()) {
                 delete require.cache[key];
             }
         });
@@ -32,9 +49,7 @@ exports.process = function (req, res, next) {
             var specContents = eol.lf(fs.readFileSync(pathToFile, {
                 encoding: 'utf-8'
             })).replace(matchingPattern, replacementPattern);
-            specContents = JSXTransformer.transform(specContents, {
-                harmony: true
-            }).code;
+            specContents = babel.transform(specContents, babelOptions).code;
             var component = React.createFactory(requireCode(specContents, pathToFile));
             html = getHtml(component);
         } catch (ex) {
