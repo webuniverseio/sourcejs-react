@@ -148,3 +148,20 @@ and use it like in example below inside render method, code block will be auto-g
     </SourceExample>
 </section>
 ```
+
+##Integration with browserSync plugin
+To allow [browserSync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) middleware work we need to make it load after react middleware. In user folder add following to `options.js`:
+```js
+core: {
+    middlewares: {
+        list: {
+            'sourcejs-contrib-browser-sync': {
+                order: 2
+            },
+            'sourcejs-react': {
+                order: 1
+            }
+        }
+    }
+}
+```
