@@ -39,7 +39,8 @@ exports.process = function (req, res, next) {
                 delete require.cache[key];
             }
         });
-        var pathToFile = path.join(global.app.get('user'), req.url);
+        var pathToFile = path.join(global.app.get('user'), req.path);
+
         var html;
         try {
             var matchingPattern = /<SourceExample((?:.|\n)*?)>\s*((?:.|\n)+?)\n\s*?<\/SourceExample>/g;

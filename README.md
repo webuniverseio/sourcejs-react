@@ -14,20 +14,14 @@ npm install sourcejs-react --save
 In `sourcejs/user/options.js` you need to add `index.jsx` to `core.common.specFiles`:
 ```js
 module.exports = {
-    core: {
-        common: {
-            specFiles: [
-                'index.jsx',
-                'index.src',
-                'index.src.html',
-                'index.jade',
-                'index.haml',
-                'index.md',
-                'readme.md',
-                'README.md',
-                'index.html'
-            ]
-        }
+    rendering: {
+        specFiles: [
+            'index.jsx',
+            'index.src.html',
+            'index.md',
+            'readme.md',
+            'README.md'
+        ]
     }
     //...
 };
@@ -147,4 +141,21 @@ and use it like in example below inside render method, code block will be auto-g
       <Button color="purple">Btn Copy Gibson Reg; 1.2em</Button>
     </SourceExample>
 </section>
+```
+
+##Integration with browserSync plugin
+To allow [browserSync](https://github.com/sourcejs/sourcejs-contrib-browser-sync) middleware work we need to make it load after react middleware. In user folder add following to `options.js`:
+```js
+core: {
+    middlewares: {
+        list: {
+            'sourcejs-contrib-browser-sync': {
+                order: 2
+            },
+            'sourcejs-react': {
+                order: 1
+            }
+        }
+    }
+}
 ```
