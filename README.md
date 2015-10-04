@@ -1,7 +1,7 @@
 React support for SourceJS
 ===============
 
-[SourceJS](http://sourcejs.com) middleware to support [React](https://facebook.github.io/react/) markup language (`*.jsx`) instead of native `*.src`.
+[SourceJS](http://sourcejs.com) middleware to support [React](https://facebook.github.io/react/) markup language (`*.jsx` or `*.js`) instead of native `*.src`.
 
 ## Install
 
@@ -11,11 +11,12 @@ To install, run npm in `sourcejs/user` folder:
 npm install sourcejs-react --save
 ```
 
-In `sourcejs/user/options.js` you need to add `index.jsx` to `core.common.specFiles`:
+In `sourcejs/user/options.js` you need to add `index.jsx` or `index.js` to `core.common.specFiles`:
 ```js
 module.exports = {
     rendering: {
         specFiles: [
+            'index.js',
             'index.jsx',
             'index.src.html',
             'index.md',
@@ -29,9 +30,51 @@ module.exports = {
 
 Then restart your SourceJS application, middleware will be loaded automatically.
 
+## Options
+Out of the box `sourcejs-react` will not cache only `**/*.jsx` files, however you can specify other glob (minimatch) patterns to skip caching using `plugins.react.refreshCachePatterns` option:
+```js
+module.exports = {
+    plugins: {
+        react: {
+            refreshCachePatterns: [
+                '**/{user,live-style-guide}/specs/**/*.js'
+            ]
+        }
+    }
+};
+```
+
+```
+Note: refreshCachePatterns option will only work in development mode
+```
+
+Since version 2 `sourcejs-react` is using `babel` instead of JSXTransformer for jsx transformations. If you would like to pass custom options to babel, you can do it through `plugins.react.babel` option:
+
+```js
+module.exports = {
+    plugins: {
+        react: {
+            babel: {
+                ignore: /.*/,
+                only: ['**/{live-style-guide,user}/specs/**'],
+                sourceMaps: true
+            }
+        }
+    }
+};
+```
+
+If you'll not provide default babel options, `sourcejs-react` will use following options as default:
+```js
+{
+    ignore: /.*/,
+    only: ['**/user/specs/**']
+}
+```
+
 ## Usage
 
-After installation, instead of `index.src` pages, you can use `index.jsx` files with React markup.
+After installation, instead of `index.src` pages, you can use `index.jsx` or `index.js` files with React markup.
 
 index.jsx
 ```js

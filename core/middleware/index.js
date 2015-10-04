@@ -1,12 +1,7 @@
 'use strict';
+var isProduction = global.MODE !== 'development';
 var options = global.opts.plugins && global.opts.plugins.react ? global.opts.plugins.react : {};
-var babelOptions = options.babel || {
-    ignore: /.*/,
-    only: [
-        '**/user/specs/**',
-        /sourcejs-react(?![\/]node_modules)/
-    ]
-};
+var babelOptions = getBabelOptions();
 require('babel/register')(babelOptions);
 var React = require('react/addons');
 var babel = require('babel-core');
@@ -16,8 +11,16 @@ var _ = require('lodash');
 var eol = require('eol');
 var FilePatternMatcher = require('./FilePatternMatcher');
 
-function isValidSpecType(req) {
-    return req.specData && (req.specData.isJsx || req.specData.isJs);
+function getBabelOptions() {
+    var babelOptions = options.babel || {
+                ignore: /.*/,
+                only: [
+                    '**/user/specs/**'
+                ]
+            };
+    babelOptions.only = babelOptions.only || [];
+    babelOptions.only.push(/sourcejs-react(?![\/]node_modules)/);
+    return babelOptions;
 }
 
 /*
@@ -29,16 +32,7 @@ function isValidSpecType(req) {
  * */
 exports.process = function (req, res, next) {
     if (isValidSpecType(req)) {
-        _.each(require.cache, function cleanReferences(cacheObj, key) {
-            var pathMatcher = new FilePatternMatcher({
-                filePaths: [key],
-                patterns: options.refreshCachePatterns || ['**/*.jsx']
-            });
-
-            if (pathMatcher.hasMatch()) {
-                delete require.cache[key];
-            }
-        });
+        cleanCacheInDevMode();
         var pathToFile = path.join(global.app.get('user'), req.path);
 
         var html;
@@ -61,6 +55,29 @@ exports.process = function (req, res, next) {
 
     next();
 };
+
+function isValidSpecType(req) {
+    return req.specData && (req.specData.isJsx || req.specData.isJs);
+}
+
+function cleanCacheInDevMode() {
+    if (!isProduction) {
+        cleanCache();
+    }
+}
+
+function cleanCache() {
+    _.each(require.cache, function cleanReferences(cacheObj, key) {
+        var pathMatcher = new FilePatternMatcher({
+            filePaths: [key],
+            patterns: options.refreshCachePatterns || ['**/*.jsx']
+        });
+
+        if (pathMatcher.hasMatch()) {
+            delete require.cache[key];
+        }
+    });
+}
 
 function requireCode(code, pathToCode) {
     var path = require('path');
@@ -95,7 +112,7 @@ function getHtml(component) {
 }
 
 function getErrorAsHtml(ex) {
-    if (global.MODE !== 'development') {
+    if (isProduction) {
         console.error(ex);
         return 'Server error';
     }
