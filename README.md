@@ -14,20 +14,14 @@ npm install sourcejs-react --save
 In `sourcejs/user/options.js` you need to add `index.jsx` to `core.common.specFiles`:
 ```js
 module.exports = {
-    core: {
-        common: {
-            specFiles: [
-                'index.jsx',
-                'index.src',
-                'index.src.html',
-                'index.jade',
-                'index.haml',
-                'index.md',
-                'readme.md',
-                'README.md',
-                'index.html'
-            ]
-        }
+    rendering: {
+        specFiles: [
+            'index.jsx',
+            'index.src.html',
+            'index.md',
+            'readme.md',
+            'README.md'
+        ]
     }
     //...
 };
