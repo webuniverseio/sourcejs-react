@@ -30,12 +30,13 @@ exports.process = function (req, res, next) {
             //noinspection HtmlUnknownAttribute
             var replacementPattern = '<code className="src-html source_visible">{`$2`}</code>' +
                 '<SourceExample$1>$2</SourceExample>';
-            var specContents = eol.lf(fs.readFileSync(pathToFile, {
-                encoding: 'utf-8'
-            })).replace(matchingPattern, replacementPattern);
+            var specContents = req.specData.renderedHtml;
+
+            specContents = specContents.replace(matchingPattern, replacementPattern);
             specContents = JSXTransformer.transform(specContents, {
                 harmony: true
             }).code;
+
             var component = React.createFactory(requireCode(specContents, pathToFile));
             html = getHtml(component);
         } catch (ex) {
