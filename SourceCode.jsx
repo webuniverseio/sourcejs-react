@@ -1,9 +1,7 @@
 'use strict';
 var React = require('react/addons');
 module.exports = React.createClass({
-	displayName: 'SourceCode',
 	propTypes: {
-		children: React.PropTypes.element.isRequired,
 		extraClasses: React.PropTypes.string
 	},
 	getDefaultProps: function getDefaultProps() {

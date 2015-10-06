@@ -41,7 +41,7 @@ exports.process = function (req, res, next) {
         } catch (ex) {
             html = getErrorAsHtml(ex);
         }
-        req.specData.renderedHtml = html;
+        req.specData.renderedHtml = '<div id="sourcejs-react-root">'+html+'</div>';
     }
 
     next();
