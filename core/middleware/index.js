@@ -3,7 +3,8 @@ var isProduction = global.MODE !== 'development';
 var options = global.opts.plugins && global.opts.plugins.react ? global.opts.plugins.react : {};
 var babelOptions = getBabelOptions();
 require('babel/register')(babelOptions);
-var React = require('react/addons');
+var React = require('react');
+var ReactDOMServer = require('react-dom/server');
 var babel = require('babel-core');
 var path = require('path');
 var fs = require('fs');
@@ -105,7 +106,7 @@ function requireCode(code, pathToCode) {
 
 function getHtml(component) {
     try {
-        return React.renderToString(component({}));
+        return ReactDOMServer.renderToString(component({}));
     } catch(ex) {
         return getErrorAsHtml(ex);
     }
@@ -118,7 +119,7 @@ function getErrorAsHtml(ex) {
     }
 
     var error = React.createFactory(require('./error.jsx'));
-    return React.renderToString(error({
+    return ReactDOMServer.renderToString(error({
         stack: ex.stack
     }));
 }

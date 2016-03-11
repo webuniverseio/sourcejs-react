@@ -115,15 +115,16 @@ module.exports = React.createClass({
 
 Note, you might get warnings that checksum are different when you try to use server and client side rendering together. That might happen because on server side (sourcejs) checksum will be created for the whole spec page, while you might be interested only in what goes in `section.source_example`. You need to force react to create a checksum in a following way (for example above):
 ```js
-var React = require('react/addons');
+var React = require('react');
+var ReactDOMServer = require('react-dom/server');
 var Button = require('button.jsx');
 module.exports = React.createClass({
     render: function () {
         var factory = React.createFactory(Button);
-        var button = React.renderToString(factory({
+        var button = ReactDOMServer.renderToString(factory({
             children: 'Btn Copy Gibson Reg; 1.2em'
         }));
-        var buttonWhite = React.renderToString(factory({
+        var buttonWhite = ReactDOMServer.renderToString(factory({
             modifier: 'white',
             children: 'Btn Copy Gibson Reg; 1.2em'
         }));
