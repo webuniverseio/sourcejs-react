@@ -1,6 +1,6 @@
 {
   "name": "sourcejs-react",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "React middleware for sourcejs.com",
   "main": "index.js",
   "dependencies": {
@@ -9,8 +9,8 @@
     "eol": "^0.2.0",
     "lodash": "^3.8.0",
     "minimatch": "^2.0.10",
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
   },
   "devDependencies": {
     "chai": "^3.3.0"
