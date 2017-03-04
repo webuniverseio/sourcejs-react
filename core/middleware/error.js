@@ -1,6 +1,6 @@
 var React = require('react');
 module.exports = React.createClass({
-    displayName: 'error.jsx',
+    displayName: 'error.js',
     propTypes: {
         stack: React.PropTypes.string.isRequired
     },
@@ -10,7 +10,7 @@ module.exports = React.createClass({
 	        {style: {color: 'red'}},
 	        React.createElement('h1', null, 'Error: '),
 	        React.createElement('p', {dangerouslySetInnerHTML: {
-	            __html: undefined.props.stack.replace(/\n/g, '<br>')
+	            __html: this.props.stack.replace(/\n/g, '<br>')
 	        }})
         );
     }
