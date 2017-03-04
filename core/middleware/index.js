@@ -117,7 +117,7 @@ function getErrorAsHtml(ex) {
         return 'Server error';
     }
 
-    var error = React.createFactory(require('./error.jsx'));
+    var error = React.createFactory(require('./error.js'));
     return ReactDOMServer.renderToString(error({
         stack: ex.stack
     }));
