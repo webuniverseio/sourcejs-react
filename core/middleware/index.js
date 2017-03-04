@@ -20,7 +20,6 @@ function getBabelOptions() {
                 ]
             };
     babelOptions.only = babelOptions.only || [];
-    babelOptions.only.push(/sourcejs-react(?![\/]node_modules)/);
     return babelOptions;
 }
 

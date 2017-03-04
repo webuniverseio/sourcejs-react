@@ -7,13 +7,13 @@ class FilePatternMatcher {
     /**
      * @param {{filePaths: Array.<String>, patterns: Array.<String>}} params
      */
-    constructor(params) {
-        this[matchedPaths] = params.filePaths.filter((file) => {
-            var fileMatcher = new FilePathMatcher({file, patterns: params.patterns});
+    constructor({filePaths, patterns}) {
+        this[matchedPaths] = filePaths.filter((file) => {
+            var fileMatcher = new FilePathMatcher({file: file.replace(/\\/g, '/'), patterns});
             return fileMatcher.doesMatchAllPatterns();
         });
         this[hasMatch] = Boolean(this[matchedPaths].length);
-        this[patterns] = params.patterns;
+        this[patterns] = patterns;
     }
     hasMatch() {
         return this[hasMatch];
