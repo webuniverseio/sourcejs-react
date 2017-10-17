@@ -1,23 +1,25 @@
 {
   "name": "sourcejs-react",
-  "version": "5.0.2",
+  "version": "6.0.0",
   "description": "React middleware for sourcejs.com",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
-    "babel": "^5.8.23",
-    "babel-core": "^5.8.25",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "eol": "^0.2.0",
     "lodash": "^3.8.0",
     "minimatch": "^2.0.10",
-    "react": "^15.0.0",
-    "react-dom": "^15.0.0"
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "babel-jest": "^19.0.0",
-    "babel-preset-es2015": "^6.22.0",
     "jest": "^19.0.2"
   },
   "repository": {
