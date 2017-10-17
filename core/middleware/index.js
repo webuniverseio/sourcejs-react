@@ -70,7 +70,7 @@ function cleanCache() {
     _.each(require.cache, function cleanReferences(cacheObj, key) {
         var pathMatcher = new FilePatternMatcher({
             filePaths: [key],
-            patterns: options.refreshCachePatterns || ['**/*.jsx']
+            patterns: options.refreshCachePatterns || ['**/*.js']
         });
 
         if (pathMatcher.hasMatch()) {
