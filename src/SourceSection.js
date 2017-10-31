@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-class SourceSection {
+class SourceSection extends PureComponent {
     render() {
         return (
 			<section className={`source_section ${this.props.extraClasses}`}>

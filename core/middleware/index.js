@@ -1,8 +1,4 @@
 'use strict';
-var isProduction = global.MODE !== 'development';
-var options = global.opts.plugins && global.opts.plugins.react ? global.opts.plugins.react : {};
-var babelOptions = getBabelOptions();
-require('babel/register')(babelOptions);
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var babel = require('babel-core');
@@ -12,6 +8,11 @@ var _ = require('lodash');
 var eol = require('eol');
 var FilePatternMatcher = require('./FilePatternMatcher');
 
+var isProduction = global.MODE !== 'development';
+var options = _.get(global, 'opts.plugins.react') ? global.opts.plugins.react : {};
+var babelOptions = getBabelOptions();
+require('babel-register')(babelOptions);
+
 function getBabelOptions() {
     var babelOptions = options.babel || {
                 ignore: /.*/,
@@ -20,7 +21,13 @@ function getBabelOptions() {
                 ]
             };
     babelOptions.only = babelOptions.only || [];
+
+    if (!babelOptions.presets) {
+        babelOptions.presets = ["es2015", "react"];
+    }
+
     return babelOptions;
+
 }
 
 /*
@@ -44,8 +51,10 @@ exports.process = function (req, res, next) {
             var specContents = eol.lf(fs.readFileSync(pathToFile, {
                 encoding: 'utf-8'
             })).replace(matchingPattern, replacementPattern);
+
             specContents = babel.transform(specContents, babelOptions).code;
-            var component = React.createFactory(requireCode(specContents, pathToFile));
+
+            var component = React.createFactory(requireCode(specContents, pathToFile).default);
             html = getHtml(component);
         } catch (ex) {
             html = getErrorAsHtml(ex);
@@ -105,7 +114,7 @@ function requireCode(code, pathToCode) {
 
 function getHtml(component) {
     try {
-        return ReactDOMServer.renderToString(component({}));
+        return ReactDOMServer.renderToStaticMarkup(component({}));
     } catch(ex) {
         return getErrorAsHtml(ex);
     }
@@ -117,8 +126,7 @@ function getErrorAsHtml(ex) {
         return 'Server error';
     }
 
-    var error = React.createFactory(require('./error.js'));
-    return ReactDOMServer.renderToString(error({
-        stack: ex.stack
-    }));
+    var component = require('./error').default;
+    var factory = React.createFactory(component);
+    return ReactDOMServer.renderToStaticMarkup(factory({stack: ex.stack}));
 }

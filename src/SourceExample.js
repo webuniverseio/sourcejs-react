@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 
-class SourceExample {
+class SourceExample extends PureComponent {
     render() {
         return (
 			<div className={`source_example ${this.props.extraClasses}`}>
