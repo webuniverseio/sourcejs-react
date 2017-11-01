@@ -18,9 +18,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var SourceSection = function () {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SourceSection = function (_PureComponent) {
+    _inherits(SourceSection, _PureComponent);
+
     function SourceSection() {
         _classCallCheck(this, SourceSection);
+
+        return _possibleConstructorReturn(this, (SourceSection.__proto__ || Object.getPrototypeOf(SourceSection)).apply(this, arguments));
     }
 
     _createClass(SourceSection, [{
@@ -35,7 +43,7 @@ var SourceSection = function () {
     }]);
 
     return SourceSection;
-}();
+}(_react.PureComponent);
 
 SourceSection.displayName = 'SourceSection';
 
